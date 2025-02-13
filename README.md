@@ -53,8 +53,5 @@ Provide documentation justifying your design decisions (e.g., authentication, en
 - Host your project on GitHub.
 - Submit via the gigsama.com talent portal.
 
-## Reward
-- If you're in the top 5 of submissions, you will receive GHS 1k and get a final interview with our team
-
 Good luck!
 
