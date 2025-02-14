@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import NoteController from '../controllers/noteController';
-import { authenticateUser } from '../middleware';
 const router = Router();
 const noteController = new NoteController();
 
@@ -101,5 +100,5 @@ router.get('/actionable-steps/:patientId', (req, res) => noteController.getActio
  *       500:
  *         description: Server error
  */
-router.get('/notes', authenticateUser, noteController.getNotesForUser);
+router.get('/notes', noteController.getNotesForUser);
 export default router;

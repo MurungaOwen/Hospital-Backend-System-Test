@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { PatientController } from '../controllers/patientController';
+import { authenticateUser } from '../middleware';
 
 const router = Router();
 const patientController = new PatientController();
@@ -47,7 +48,7 @@ const patientController = new PatientController();
  *       500:
  *         description: Server error
  */
-router.post('/select-doctor', (req, res) => patientController.selectDoctor(req, res));
+router.post('/select-doctor', authenticateUser, (req, res) => patientController.selectDoctor(req, res));
 
 /**
  * @swagger

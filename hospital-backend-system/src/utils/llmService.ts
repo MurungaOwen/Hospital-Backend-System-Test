@@ -4,7 +4,7 @@ import "dotenv/config";
 export class LLMService {
     private static genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
     
-    static async extractActionableSteps(content: string): Promise<{ checklist: string[]; plan: string[] }> {
+    static async extractActionableSteps(content: string): Promise<{ checklist: string[]; plan: {action: string, frequency: string}[] }> {
         const model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
             const prompt = `
                 Extract actionable steps from the following doctor's note. Divide them into two categories:

@@ -3,7 +3,7 @@ import * as doctorRoutes from "./doctorRoutes";
 import * as patientRoutes from "./patientRoutes";
 import * as noteRoutes from "./noteRoutes";
 import * as authRoutes from "./authRoutes";
-import * as reminderRoutes from "./reminderRoutes";
+import * as reminderRoutes from "./reminderRoute";
 import docsRouter from "./docRoute";
 const appRouter = Router();
 

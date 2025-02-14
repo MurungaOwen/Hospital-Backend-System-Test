@@ -1,6 +1,7 @@
 import { Note, INote, ActionableStep, IActionableStep } from '../models/noteModel';
 import { encrypt, decrypt } from '../utils/encryption';
 import { scheduleReminder } from '../utils/scheduling';
+import { createReminder, clearReminders } from './reminderService';
 import { LLMService } from '../utils/llmService'; // Hypothetical LLM service
 
 export class NoteService {

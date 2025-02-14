@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { NoteService } from '../services/noteService';
+import { AuthRequest } from '../middleware'; // Import AuthRequest to access user data
 
 class NoteController {
     private noteService: NoteService;
@@ -42,16 +43,8 @@ class NoteController {
         }
     };
 
-    public getNotesForUser = async (req: AuthRequest, res: Response): Promise<void> => {
-        try {
-            const userId = req.user.id;
-            const role = req.user.role; // Get role from JWT
-
-            const notes = await this.noteService.getNotes(userId, role);
-            res.status(200).json({ success: true, notes });
-        } catch (error) {
-            res.status(500).json({ success: false, message: error instanceof Error ? error.message : 'Server error' });
-        }
+    public getNotesForUser = async (req: Request, res: Response): Promise<void> => {
+        res.status(200)
     };
 }
 

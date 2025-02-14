@@ -1,7 +1,7 @@
 import express from 'express';
-import { authenticateUser } from '../middlewares/authMiddleware';
+import { authenticateUser } from '../middleware';
 import Reminder from '../models/scheduleModel';
-import { createReminder, clearReminders, rescheduleReminders } from '../services/reminderService';
+import { clearReminders } from '../services/reminderService';
 
 const router = express.Router();
 
@@ -95,7 +95,7 @@ export default router;
  *         description: Failed to retrieve reminders
  */
 
-**
+/**
  * @swagger
  * /reminders/{patientId}:
  *   delete:
