@@ -1,5 +1,5 @@
 import { Note, INote, ActionableStep, IActionableStep } from '../models/noteModel';
-import { encrypt } from '../utils/encryption';
+import { encrypt, decrypt } from '../utils/encryption';
 import { scheduleReminder } from '../utils/scheduling';
 import { LLMService } from '../utils/llmService'; // Hypothetical LLM service
 
@@ -18,7 +18,7 @@ export class NoteService {
     }
 
     async processActionableSteps(note: INote) {
-        const llmResponse = await LLMService.extractActionableSteps(note.content);
+        const llmResponse = await LLMService.extractActionableSteps(decrypt(note.content));
         const { checklist, plan } = llmResponse;
 
         const newActions = new ActionableStep({
@@ -49,5 +49,31 @@ export class NoteService {
             console.log(`🕒 Scheduling: ${task.action} - Frequency: ${task.frequency}`);
             await createReminder(patientId, task.action, task.frequency);
         }
+    }
+
+    async getNotes(userId: string, role: string) {
+        let query = {};
+
+        // If the user is a doctor, fetch notes they wrote
+        if (role === 'doctor') {
+            query = { doctorId: userId };
+        } 
+        // If the user is a patient, fetch notes about them
+        else if (role === 'patient') {
+            query = { patientId: userId };
+        } 
+        // Invalid role
+        else {
+            throw new Error('Invalid user role');
+        }
+
+        // Fetch notes from MongoDB
+        const notes: INote[] = await Note.find(query);
+
+        // Decrypt the content before sending it to the frontend
+        return notes.map(note => ({
+            ...note.toObject(),
+            content: decrypt(note.content),
+        }));
     }
 }

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import NoteController from '../controllers/noteController';
-
+import { authenticateUser } from '../middleware';
 const router = Router();
 const noteController = new NoteController();
 
@@ -84,4 +84,22 @@ router.post('/submit', (req, res) => noteController.submitNote(req, res));
  */
 router.get('/actionable-steps/:patientId', (req, res) => noteController.getActionableSteps(req, res));
 
+
+/**
+ * @swagger
+ * /notes:
+ *   get:
+ *     summary: Get notes for the logged-in user (Doctor or Patient)
+ *     tags: [Notes]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved notes
+ *       401:
+ *         description: Unauthorized (invalid token)
+ *       500:
+ *         description: Server error
+ */
+router.get('/notes', authenticateUser, noteController.getNotesForUser);
 export default router;

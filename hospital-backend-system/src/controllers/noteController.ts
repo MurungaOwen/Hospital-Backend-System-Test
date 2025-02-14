@@ -41,6 +41,18 @@ class NoteController {
             }
         }
     };
+
+    public getNotesForUser = async (req: AuthRequest, res: Response): Promise<void> => {
+        try {
+            const userId = req.user.id;
+            const role = req.user.role; // Get role from JWT
+
+            const notes = await this.noteService.getNotes(userId, role);
+            res.status(200).json({ success: true, notes });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error instanceof Error ? error.message : 'Server error' });
+        }
+    };
 }
 
 export default NoteController;
