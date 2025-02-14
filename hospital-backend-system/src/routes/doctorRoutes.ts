@@ -4,10 +4,83 @@ import DoctorController from '../controllers/doctorController';
 const router = Router();
 const doctorController = new DoctorController();
 
-// Route to get the list of patients assigned to a doctor
-router.get('/patients', doctorController.getPatients);
+/**
+ * @swagger
+ * tags:
+ *   name: Doctors
+ *   description: API for managing doctors and their patients
+ */
 
-// Route to assign a patient to a doctor
-router.post('/assign', doctorController.assignPatient);
+/**
+ * @swagger
+ * /doctors/patients/{id}:
+ *   get:
+ *     summary: Get patients assigned to a doctor
+ *     tags: [Doctors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Doctor ID
+ *     responses:
+ *       200:
+ *         description: List of assigned patients
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "patient123"
+ *                   name:
+ *                     type: string
+ *                     example: "John Doe"
+ *       500:
+ *         description: Server error
+ */
+router.get('/patients/:id', (req, res) => doctorController.getPatients(req, res));
+
+/**
+ * @swagger
+ * /doctors/assign:
+ *   post:
+ *     summary: Assign a patient to a doctor
+ *     tags: [Doctors]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - doctorId
+ *               - patientId
+ *             properties:
+ *               doctorId:
+ *                 type: string
+ *                 example: "doctor123"
+ *               patientId:
+ *                 type: string
+ *                 example: "patient123"
+ *     responses:
+ *       200:
+ *         description: Patient assigned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Patient assigned successfully"
+ *       500:
+ *         description: Server error
+ */
+router.post('/assign', (req, res) => doctorController.assignPatient(req, res));
 
 export default router;

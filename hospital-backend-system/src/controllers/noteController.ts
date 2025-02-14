@@ -13,11 +13,14 @@ class NoteController {
             const { doctorId, patientId, content } = req.body;
             const result = await this.noteService.submitNote(doctorId, patientId, content);
             res.status(201).json(result);
+            return;
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).json({ message: error.message });
+                return;
             } else {
                 res.status(500).json({ message: 'An unknown error occurred' });
+                return;
             }
         }
     };
@@ -27,11 +30,14 @@ class NoteController {
             const { patientId } = req.params;
             const steps = await this.noteService.getActionableSteps(patientId);
             res.status(200).json(steps);
+            return;
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).json({ message: error.message });
+                return;
             } else {
                 res.status(500).json({ message: 'An unknown error occurred' });
+                return;
             }
         }
     };

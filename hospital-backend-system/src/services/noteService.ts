@@ -1,4 +1,4 @@
-import { Note } from '../models/noteModel';
+import { Note, INote } from '../models/noteModel';
 import { encrypt } from '../utils/encryption';
 import { scheduleReminder } from '../utils/scheduling';
 import { LLMService } from '../utils/llmService'; // Hypothetical LLM service
@@ -17,7 +17,7 @@ export class NoteService {
         await this.processActionableSteps(note);
     }
 
-    async processActionableSteps(note: Note) {
+    async processActionableSteps(note: INote) {
         const llmResponse = await LLMService.extractActionableSteps(note.content);
         const { checklist, plan } = llmResponse;
 
@@ -31,7 +31,7 @@ export class NoteService {
         });
 
         // Logic to schedule actions from the plan
-        await scheduleReminder(patientId, plan);
+        // await scheduleReminder(patientId, plan);
     }
 
     async getActionableSteps(patientId: string) {

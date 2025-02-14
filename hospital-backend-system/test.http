@@ -1,0 +1,8 @@
+POST http://127.0.0.1:3000/api/auth/users
+Content-Type: application/json
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword123",
+  "role": "user",
+}

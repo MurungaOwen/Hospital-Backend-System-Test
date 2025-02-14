@@ -16,6 +16,7 @@ export class PatientController {
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).json({ message: error.message });
+                return;
             } else {
                 res.status(500).json({ message: 'An unknown error occurred' });
             }

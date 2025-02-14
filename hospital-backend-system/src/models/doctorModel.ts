@@ -19,3 +19,4 @@ const DoctorSchema: Schema = new Schema({
 
 const Doctor = mongoose.model<IDoctor>('Doctor', DoctorSchema);
 export default Doctor;
+export {IDoctor};

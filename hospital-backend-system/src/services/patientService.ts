@@ -13,10 +13,11 @@ export class PatientService {
     }
 
     async getAssignedDoctor(patientId: string): Promise<IDoctor | null> {
-        const patient = await Patient.findById(patientId).populate('assignedDoctor');
+        const patient = await Patient.findById(patientId);
         if (!patient) {
             throw new Error('Patient not found');
         }
-        return patient.assignedDoctor as IDoctor | null;
+        let doctorID = patient.assignedDoctor;
+        return await Doctor.findById(doctorID)
     }
 }

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
 
-export class AuthController {
+class AuthController {
     private authService: AuthService;
 
     constructor() {
@@ -13,11 +13,14 @@ export class AuthController {
             const { name, email, password, role } = req.body;
             const user = await this.authService.registerUser(name, email, password, role);
             res.status(201).json({ message: 'User registered successfully', user });
+            return;
         } catch (error) {
             if (error instanceof Error) {
                 res.status(400).json({ message: error.message });
+                return;
             } else {
                 res.status(400).json({ message: 'An unknown error occurred' });
+                return;
             }
         }
     }
@@ -36,3 +39,5 @@ export class AuthController {
         }
     }
 }
+
+export default AuthController;
