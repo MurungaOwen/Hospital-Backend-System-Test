@@ -7,14 +7,29 @@ class DoctorController {
     constructor() {
         this.doctorService = new DoctorService();
     }
-
+    public async listDoctors(req: Request, res: Response): Promise<void> {
+        try {
+            const doctors = await this.doctorService.getDoctors();
+            res.status(200).json({data: doctors});
+            return;
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(500).json({ message: error.message });
+                return;
+            } else {
+                res.status(500).json({ message: 'An unknown error occurred' });
+            }
+        }
+    }
     public async getPatients(req: Request, res: Response): Promise<void> {
         try {
             const doctorId = req.params.id;
             const patients = await this.doctorService.getPatients(doctorId);
             res.status(200).json(patients);
+            return;
         } catch (error) {
             res.status(500).json({ message: 'Error retrieving patients', error });
+            return;
         }
     }
 

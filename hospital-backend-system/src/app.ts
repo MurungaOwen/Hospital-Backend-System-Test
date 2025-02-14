@@ -2,7 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import logger from "morgan";
 import appRouter from './routes';
-// import { setupSwagger } from './swagger';
+import 'dotenv/config';
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,7 +12,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
-// setupSwagger(app);
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/hospital-backend', {

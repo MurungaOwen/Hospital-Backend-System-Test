@@ -1,20 +1,23 @@
 import { Schema, model, Document } from 'mongoose';
 
-export interface ActionableStep extends Document {
-    reminder: {
-        patientId: string;
-        message: string;
-        scheduledTime: Date;
-    };
+export interface IActionableStep extends Document {
+    checklist: string[];
+    plan: { action: string; frequency: string }[];
+    patientId: string;
     // Add other properties as needed
 }
 
 const actionableStepSchema = new Schema({
-    reminder: {
-        patientId: { type: String, required: true },
-        message: { type: String, required: true },
-        scheduledTime: { type: Date, required: true },
+    checklist: { type: [String], required: true},
+    plan: {
+        type: 
+            {
+                action: String,
+                frequency: String
+            }
+        , required: true
     },
+    patientId: {type: String, required:true}
     // Define other properties as needed
 });
 
@@ -47,6 +50,6 @@ const noteSchema = new Schema({
 });
 
 const Note = model<INote>('Note', noteSchema);
-const ActionableStep = model<ActionableStep>('ActionableStep', actionableStepSchema);
+const ActionableStep = model<IActionableStep>('ActionableStep', actionableStepSchema);
 
 export { Note, ActionableStep };

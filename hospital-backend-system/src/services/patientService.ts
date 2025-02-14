@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Patient from '../models/patientModel';
+import Patient, { IPatient } from '../models/patientModel';
 import Doctor, { IDoctor } from '../models/doctorModel';
 
 export class PatientService {
@@ -13,11 +13,20 @@ export class PatientService {
     }
 
     async getAssignedDoctor(patientId: string): Promise<IDoctor | null> {
-        const patient = await Patient.findById(patientId);
+        const patient = await Patient.findById(patientId).populate('assignedDoctor');
         if (!patient) {
             throw new Error('Patient not found');
         }
-        let doctorID = patient.assignedDoctor;
-        return await Doctor.findById(doctorID)
+        console.log("patient is: ", patient);
+        return await Doctor.findById(patient.assignedDoctor)
+    }
+
+    async getPatients ():Promise<IPatient[]> {
+        try {
+            const patients = await Patient.find();
+            return patients;
+        } catch (error) {
+            throw new Error("Error during db access")
+        }
     }
 }

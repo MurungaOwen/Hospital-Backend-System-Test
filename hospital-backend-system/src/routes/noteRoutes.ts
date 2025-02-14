@@ -55,7 +55,7 @@ router.post('/submit', (req, res) => noteController.submitNote(req, res));
 
 /**
  * @swagger
- * /actionable-steps/{patientId}:
+ * /notes/actionable-steps/{patientId}:
  *   get:
  *     summary: Retrieve actionable steps for a patient based on notes
  *     tags: [Notes]

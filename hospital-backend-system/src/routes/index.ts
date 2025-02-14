@@ -3,6 +3,7 @@ import * as doctorRoutes from "./doctorRoutes";
 import * as patientRoutes from "./patientRoutes";
 import * as noteRoutes from "./noteRoutes";
 import * as authRoutes from "./authRoutes";
+import * as reminderRoutes from "./reminderRoutes";
 import docsRouter from "./docRoute";
 const appRouter = Router();
 
@@ -20,12 +21,16 @@ const appRoutes = [
             router: noteRoutes.default,
         },
         {
-            path: "/patient",
+            path: "/patients",
             router: patientRoutes.default,
         },
         {
             path: "/docs",
             router: docsRouter,
+        },
+        {
+            path: "/reminders",
+            router: reminderRoutes.default,
         }
 ];
 

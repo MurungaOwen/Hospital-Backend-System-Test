@@ -10,6 +10,8 @@ The Hospital Backend System is designed to manage user signups, patient-doctor a
 - **Dynamic Scheduling**: The system schedules reminders based on actionable steps and adjusts them dynamically based on patient check-ins.
 
 ## API Endpoints
+- **DOCS**
+ - GET `/api/docs`
 - **User Signup and Authentication**
   - POST `/api/auth/signup`: Register a new user.
   - POST `/api/auth/login`: Authenticate a user.
@@ -20,7 +22,7 @@ The Hospital Backend System is designed to manage user signups, patient-doctor a
 
 - **Doctor Notes & Actionable Steps**
   - POST `/api/notes/submit`: Submit notes for a patient.
-  - GET `/api/notes/actionable-steps`: Retrieve actionable steps for a patient.
+  - GET `/api/notes/actionable-steps/:patientId`: Retrieve actionable steps for a patient.
 
 ## Setup Instructions
 1. Clone the repository:

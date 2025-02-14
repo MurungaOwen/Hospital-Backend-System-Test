@@ -84,4 +84,21 @@ router.post('/select-doctor', (req, res) => patientController.selectDoctor(req, 
  */
 router.get('/assigned-doctor/:patientId', (req, res) => patientController.getAssignedDoctor(req, res));
 
+/**
+ * @swagger
+ * /patients:
+ *   get:
+ *     summary: Get all patients
+ *     tags: [Patients]
+ *     responses:
+ *       200:
+ *         description: List of all patients
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Server error
+ */
+router.get('/', (req, res) => patientController.listPatients(req, res))
 export default router;

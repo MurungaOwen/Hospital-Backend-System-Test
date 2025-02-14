@@ -1,4 +1,4 @@
-import Doctor from '../models/doctorModel';
+import Doctor, { IDoctor } from '../models/doctorModel';
 import Patient, { IPatient } from '../models/patientModel';
 
 export class DoctorService {
@@ -14,7 +14,7 @@ export class DoctorService {
         await doctor.save();
     }
 
-    async getPatients(doctorId: string): Promise<IPatient[]> {
+    async getPatients(doctorId: string): Promise<IPatient[] | []> {
         const doctor = await Doctor.findById(doctorId).populate('assignedPatients');
         
         if (!doctor) {
@@ -22,5 +22,16 @@ export class DoctorService {
         }
 
         return doctor.assignedPatients as IPatient[];
+    }
+
+    // get list of doctors
+    async getDoctors(): Promise<IDoctor[] | []> {
+        try {
+            const doctors = await Doctor.find();
+            console.log("Doctors are: ", doctors);
+            return doctors;
+        } catch (error) {
+            throw new Error("Error during db access")
+        }
     }
 }

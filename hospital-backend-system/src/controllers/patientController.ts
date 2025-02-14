@@ -7,12 +7,12 @@ export class PatientController {
     constructor() {
         this.patientService = new PatientService();
     }
-
     public async selectDoctor(req: Request, res: Response): Promise<void> {
         const { patientId, doctorId } = req.body;
         try {
             const result = await this.patientService.selectDoctor(patientId, doctorId);
             res.status(200).json(result);
+            return;
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).json({ message: error.message });
@@ -33,6 +33,22 @@ export class PatientController {
                 res.status(500).json({ message: error.message });
             } else {
                 res.status(500).json({ message: 'An unknown error occurred' });
+            }
+        }
+    }
+
+    public async listPatients(req: Request, res: Response): Promise<void> {
+        try {
+            const patients = await this.patientService.getPatients();
+            res.status(200).json({data: patients});
+            return;
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(500).json({ message: error.message });
+                return;
+            } else {
+                res.status(500).json({ message: 'An unknown error occurred' });
+                return;
             }
         }
     }

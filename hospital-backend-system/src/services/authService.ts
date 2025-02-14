@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User, IUser } from '../models/userModel';
+import Doctor, { IDoctor } from '../models/doctorModel';
+import patientModel, {IPatient} from '../models/patientModel';
 
 class AuthService {
     async hashPassword(password: string): Promise<string> {
@@ -16,10 +18,21 @@ class AuthService {
         return null;
     }
 
-    async registerUser(name: string, email: string, password: string, role: 'Patient' | 'Doctor'): Promise<IUser> {
+    async registerUser(name: string, email: string, password: string, role: 'Patient' | 'Doctor', specialization?: string| null): Promise<IDoctor | IPatient | null> {
         const hashedPassword = await this.hashPassword(password);
         const newUser = new User({ name, email, password: hashedPassword, role });
-        return await newUser.save();
+        await newUser.save();
+    
+        switch (role) {
+            case "Patient":
+                const newPatient = new patientModel({ name, email, role });
+                return await newPatient.save();
+            case "Doctor":
+                const newDoctor = new Doctor({ name, email, role, specialization });
+                return await newDoctor.save();
+            default:
+                return null
+        }
     }
 
     async loginUser(email: string, password: string): Promise<string> {
@@ -27,8 +40,7 @@ class AuthService {
         if (!user) {
             throw new Error('Invalid email or password');
         }
-
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET!, { expiresIn: '1h' });
         return token;
     }
 }
