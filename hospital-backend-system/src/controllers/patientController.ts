@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PatientService } from '../services/patientService';
+import { AuthRequest } from '../middleware';
 
 export class PatientController {
     private patientService: PatientService;
@@ -23,11 +24,17 @@ export class PatientController {
         }
     }
 
-    public async getAssignedDoctor(req: Request, res: Response): Promise<void> {
-        const { patientId } = req.params;
+    public async getAssignedDoctor(req: AuthRequest, res: Response): Promise<void> {
+    
         try {
-            const doctor = await this.patientService.getAssignedDoctor(patientId);
-            res.status(200).json(doctor);
+            const patientId = req.user?.id
+            if(patientId) {
+                const doctor = await this.patientService.getAssignedDoctor(patientId);
+                res.status(200).json(doctor);
+            }
+            res.status(400).json({
+                msg: "Supply Auth headers"
+            })
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).json({ message: error.message });

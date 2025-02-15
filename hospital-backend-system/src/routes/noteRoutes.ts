@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import NoteController from '../controllers/noteController';
+import { authenticateUser } from '../middleware';
+
 const router = Router();
 const noteController = new NoteController();
 
@@ -54,17 +56,12 @@ router.post('/submit', (req, res) => noteController.submitNote(req, res));
 
 /**
  * @swagger
- * /notes/actionable-steps/{patientId}:
+ * /notes/actionable-steps:
  *   get:
  *     summary: Retrieve actionable steps for a patient based on notes
  *     tags: [Notes]
- *     parameters:
- *       - in: path
- *         name: patientId
- *         required: true
- *         schema:
- *           type: string
- *         description: Patient ID
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: List of actionable steps
@@ -81,7 +78,7 @@ router.post('/submit', (req, res) => noteController.submitNote(req, res));
  *       500:
  *         description: Server error
  */
-router.get('/actionable-steps/:patientId', (req, res) => noteController.getActionableSteps(req, res));
+router.get('/actionable-steps', authenticateUser, (req, res) => noteController.getActionableSteps(req, res));
 
 
 /**
@@ -100,5 +97,5 @@ router.get('/actionable-steps/:patientId', (req, res) => noteController.getActio
  *       500:
  *         description: Server error
  */
-router.get('/notes', noteController.getNotesForUser);
+router.get('/', authenticateUser, noteController.getNotesForUser);
 export default router;

@@ -28,7 +28,6 @@ export class DoctorService {
     async getDoctors(): Promise<IDoctor[] | []> {
         try {
             const doctors = await Doctor.find();
-            console.log("Doctors are: ", doctors);
             return doctors;
         } catch (error) {
             throw new Error("Error during db access")

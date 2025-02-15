@@ -21,14 +21,14 @@ class AuthService {
     async registerUser(name: string, email: string, password: string, role: 'Patient' | 'Doctor', specialization?: string| null): Promise<IDoctor | IPatient | null> {
         const hashedPassword = await this.hashPassword(password);
         const newUser = new User({ name, email, password: hashedPassword, role });
-        await newUser.save();
+        const user = await newUser.save();
     
         switch (role) {
             case "Patient":
-                const newPatient = new patientModel({ name, email, role });
+                const newPatient = new patientModel({ _id:user.id, name, email, role });
                 return await newPatient.save();
             case "Doctor":
-                const newDoctor = new Doctor({ name, email, role, specialization });
+                const newDoctor = new Doctor({ _id:user.id, name, email, role, specialization });
                 return await newDoctor.save();
             default:
                 return null

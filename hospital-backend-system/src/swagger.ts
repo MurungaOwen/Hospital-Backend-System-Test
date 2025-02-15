@@ -2,7 +2,7 @@ const swaggerOption = {
     definition: {
             openapi: "3.0.0",
             info: {
-                    title: "GBackend",
+                    title: "Backend",
                     version: "1.0.0",
             },
             servers: [
@@ -12,7 +12,7 @@ const swaggerOption = {
             ],
             components: {
                     securitySchemes: {
-                            bearerAuth: {
+                            BearerAuth: {
                                     type: "http",
                                     scheme: "bearer",
                                     bearerFormat: "JWT",

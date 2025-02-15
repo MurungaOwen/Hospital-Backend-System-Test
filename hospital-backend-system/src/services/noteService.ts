@@ -52,15 +52,17 @@ export class NoteService {
         }
     }
 
-    async getNotes(userId: string, role: string) {
+    async getNotes(userId: string | undefined, role: string | undefined) {
         let query = {};
-
+        if((userId || role) === undefined) {
+            throw new Error('Invalid user')
+        }
         // If the user is a doctor, fetch notes they wrote
-        if (role === 'doctor') {
+        if (role === 'Doctor') {
             query = { doctorId: userId };
         } 
         // If the user is a patient, fetch notes about them
-        else if (role === 'patient') {
+        else if (role === 'Patient') {
             query = { patientId: userId };
         } 
         // Invalid role

@@ -39,8 +39,8 @@ const authController = new AuthController();
  *                 type: string
  *                 example: "securepassword123"
  *               role:
- *                 type: string
- *                 example: "user"
+ *                 type: enum['Patient', 'Doctor']
+ *                 example: "Patient"
  *     responses:
  *       201:
  *         description: User registered successfully

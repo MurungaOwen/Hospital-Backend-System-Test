@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { NoteService } from '../services/noteService';
 import { AuthRequest } from '../middleware'; // Import AuthRequest to access user data
+import { INote } from '../models/noteModel';
 
 class NoteController {
     private noteService: NoteService;
@@ -26,12 +27,17 @@ class NoteController {
         }
     };
 
-    public getActionableSteps = async (req: Request, res: Response): Promise<void> => {
+    public getActionableSteps = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
-            const { patientId } = req.params;
-            const steps = await this.noteService.getActionableSteps(patientId);
-            res.status(200).json(steps);
-            return;
+            const userId = req.user?.id;
+            if(userId){
+                const steps = await this.noteService.getActionableSteps(userId);
+                res.status(200).json(steps);
+                return;
+            }
+            res.status(400).json({
+                msg: "No user found"
+            })
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).json({ message: error.message });
@@ -43,8 +49,22 @@ class NoteController {
         }
     };
 
-    public getNotesForUser = async (req: Request, res: Response): Promise<void> => {
-        res.status(200)
+    public getNotesForUser = async (req: AuthRequest, res: Response): Promise<void> => {
+        try {
+            const notes = await this.noteService.getNotes(req.user?.id, req.user?.role);
+            res.status(200).json({
+                data: notes
+            })
+            return
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(500).json({ message: error.message });
+                return;
+            } else {
+                res.status(500).json({ message: 'An unknown error occurred' });
+                return;
+            }
+        }
     };
 }
 
